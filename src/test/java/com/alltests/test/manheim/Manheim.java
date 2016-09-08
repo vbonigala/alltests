@@ -3,8 +3,11 @@ package com.alltests.test.manheim;
 import static junit.framework.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -13,15 +16,11 @@ import cucumber.api.java.en.When;
 
 public class Manheim {
 
-	private FirefoxDriver wd;
-	
-	@Before
-	public void setupmanheim() {
-		wd = new FirefoxDriver();	
-	}
+	private WebDriver wd;
 
 	@Given("^we access main page$")
 	public void accessMainPage() {
+		wd = new FirefoxDriver();
 		wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 		wd.get("http://shoestore-manheim.rhcloud.com/");
 	}
@@ -31,7 +30,8 @@ public class Manheim {
 		wd.findElement(By.id("remind_email_input")).click();
 		wd.findElement(By.id("remind_email_input")).clear();
 		wd.findElement(By.id("remind_email_input")).sendKeys("test@test.com");
-		wd.findElement(By.xpath("//form[@id='remind_email_form']/div/input[2]")).click();
+		wd.findElement(By.xpath("//form[@id='remind_email_form']/div/input[2]"))
+				.click();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -44,7 +44,8 @@ public class Manheim {
 
 	@After
 	public void teardownmanheim() {
-		wd.close();
+		if (wd != null)
+			wd.close();
 
 	}
 }

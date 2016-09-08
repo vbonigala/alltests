@@ -3,6 +3,7 @@ package com.alltests.test.stepdef;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import cucumber.api.java.After;
@@ -14,15 +15,11 @@ import cucumber.api.java.en.When;
 
 public class GoogleSearchSteps {
 
-	private FirefoxDriver wd;
-	
-	@Before
-	public void setupgoogle() {
-		wd = new FirefoxDriver();	
-	}
+	private WebDriver wd;
 
 	@Given("^we access search page$")
 	public void accessSearchPage() {
+		wd = new FirefoxDriver();
 		wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 		wd.get("https://www.google.com/");
 	}
@@ -37,7 +34,9 @@ public class GoogleSearchSteps {
 
 	@Then("^a page with Science should be displayed$")
 	public void displaySciencePage() {
-		wd.findElement(By.linkText("Science - Wikipedia, the free encyclopedia")).click();
+		wd.findElement(
+				By.linkText("Science - Wikipedia, the free encyclopedia"))
+				.click();
 		if (!wd.findElement(By.id("firstHeading")).getText().equals("Science")) {
 			System.out.println("verifyText failed");
 		} else {
@@ -53,12 +52,13 @@ public class GoogleSearchSteps {
 		} else {
 			System.out.println("verifyText for History passed");
 
-		}	
+		}
 	}
-	
+
 	@After
 	public void teardowngoogle() {
-		wd.close();
-		
+		if (wd != null)
+			wd.close();
+
 	}
 }
